@@ -66,9 +66,28 @@ class AlienInvasion:
 
   def _create_fleet(self):
     """Create the fleet of aliens."""
-    # Make an alien.
+    # Create an alien and keep adding aliens until there's no room left.
+    # Spacing between aliens is one alien width and one alien height.
     alien = Alien(self)
-    self.aliens.add(alien)
+    alien_width, alien_height = alien.rect.size
+
+    current_x, current_y = alien_width, alien_height
+    while current_y < (self.settings.height - 4 * alien_height):
+      while current_x < (self.settings.width - 2 * alien_width):
+        self._create_alien(current_x, current_y)
+        current_x += 2 * alien_width
+
+      # Finished a row; reset x value, and increment y value.
+      current_x = alien_width
+      current_y += 1.5 * alien_height
+  
+
+  def _create_alien(self, pos_x, pos_y):
+    new_alien = Alien(self)
+    new_alien.x = pos_x
+    new_alien.rect.x = pos_x
+    new_alien.rect.y = pos_y
+    self.aliens.add(new_alien) 
 
   def _update_bullet(self):
     """Update position of bullets and get rid of old bullets."""
