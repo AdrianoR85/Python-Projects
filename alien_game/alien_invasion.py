@@ -4,6 +4,7 @@ import pygame as pg
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 
 class AlienInvasion:
@@ -17,6 +18,9 @@ class AlienInvasion:
 
     self.ship = Ship(self)
     self.bullets = pg.sprite.Group()
+    self.aliens = pg.sprite.Group()
+
+    self._create_fleet()
 
   def run_game(self):
     while True:
@@ -60,6 +64,12 @@ class AlienInvasion:
       new_bullet = Bullet(self)
       self.bullets.add(new_bullet)
 
+  def _create_fleet(self):
+    """Create the fleet of aliens."""
+    # Make an alien.
+    alien = Alien(self)
+    self.aliens.add(alien)
+
   def _update_bullet(self):
     """Update position of bullets and get rid of old bullets."""
     # Update bullet positions.
@@ -75,6 +85,7 @@ class AlienInvasion:
     for bullet in self.bullets.sprites():
       bullet.draw_bullet()
     self.ship.draw_ship()
+    self.aliens.draw(self.screen)
     pg.display.flip()
     
 
