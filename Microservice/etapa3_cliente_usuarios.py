@@ -46,9 +46,9 @@ def main():
         
         # ========================================
         # READ - Ler/Buscar usuários
-        # ========================================
+        #🔍 BUSCANDO USUÁRIOS ========================================
         print("\n" + "=" * 60)
-        print("🔍 BUSCANDO USUÁRIOS")
+        print("")
         print("=" * 60)
         
         print(f"\n[CLIENTE] Buscando usuário ID {id_joao}")
