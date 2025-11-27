@@ -39,7 +39,7 @@ def title(msg):
 def main():
   print("\n🔗 Conectando ao servidor de usuários...")
   try:
-    servidor = xmlrpc.client.ServerProxy("http://localhost:8001")
+    servidor = xmlrpc.client.ServerProxy("http://localhost:8001", allow_none=True)
     print("✅ Conectado!\n")
     
     while True:
@@ -62,7 +62,7 @@ def main():
       elif escolha == "2":
         title("🔍 BUSCANDO USUÁRIOS")
 
-        id_usuario = input("Digite o ID do usuário: ")
+        id_usuario = int(input("Digite o ID do usuário: "))
 
         print(f"\n[CLIENTE] Buscando usuário {id_usuario}")
         resposta = servidor.buscar_usuario(id_usuario)
@@ -87,15 +87,19 @@ def main():
         print("✏️  ATUALIZANDO USUÁRIO")
         print("=" * 60)
       
-        id_usuario = nome = input("Digite o ID do usuário: ")
+        id_usuario = int(input("Digite o ID do usuário: "))
+        novo_nome = input("Digite o novo nome (ou deixe vazio para manter): ")
+        novo_email = input("Digite o novo email (ou deixe vazio para manter): ")
 
         resposta = servidor.atualizar_usuario(
           id_usuario, 
-          email="maria.santos@empresa.com" # type: ignore
+          novo_nome if novo_nome.strip() else None, # type: ignore
+          novo_email if novo_email.strip() else None # type: ignore
         )
-        if resposta['sucesso']:
-          user = resposta['usuario']
-          print(f"[CLIENTE] ✅ Atualizado: {user['nome']} - {user['email']}")
+
+        if resposta['sucesso']: # type: ignore
+          user = resposta['usuario'] # type: ignore
+          print(f"[CLIENTE] ✅ Atualizado: {user['nome']} - {user['email']}") # type: ignore
       
       elif escolha == "5":
         # ========================================
@@ -105,7 +109,7 @@ def main():
         title("🗑️  DELETANDO USUÁRIO")
 
       
-        id_usuario = nome = input("Digite o ID do usuário: ")
+        id_usuario = int(input("Digite o ID do usuário: "))
         print(f"\n[CLIENTE] Deletando usuário ID {id_usuario}")
         resposta = servidor.deletar_usuario(id_usuario)
         print(f"[CLIENTE] ✅ {resposta['mensagem']}") # type: ignore
